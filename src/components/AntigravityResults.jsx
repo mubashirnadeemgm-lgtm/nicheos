@@ -1,15 +1,15 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Sparkles, TrendingUp, DollarSign, AlertTriangle, Wrench, FileText, Award } from 'lucide-react'
+import { Sparkles, TrendingUp, DollarSign, AlertTriangle, Wrench, FileText, Award, Radar } from 'lucide-react'
 
 const AntigravityResults = ({ ideas }) => {
-    // Error boundary: Check if ideas exists and is an array
+    // Error boundary: Check if ideas exists
     if (!ideas) {
         return (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-                <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-3" />
-                <h3 className="text-lg font-semibold text-red-900 mb-2">No Data Received</h3>
-                <p className="text-red-700">The webhook did not return any data. Please try again.</p>
+            <div className="bg-[#050505] border-2 border-yellow-400/30 rounded-lg p-10 text-center">
+                <Radar className="w-16 h-16 text-yellow-400 mx-auto mb-4 animate-pulse" />
+                <h3 className="text-xl font-bold text-yellow-400 mb-2 font-mono">WAITING FOR MISSION DATA...</h3>
+                <p className="text-gray-400">Stand by while the intelligence is being gathered.</p>
             </div>
         )
     }
