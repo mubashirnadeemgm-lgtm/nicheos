@@ -2,20 +2,8 @@
 // Generates 3 comprehensive channel ideas based on user profile
 
 const nicheDatabase = {
-    'tech-ai': {
+    'tech': {
         ideas: [
-            {
-                name: 'AI Tool Hunter',
-                concept: 'Testing and reviewing AI tools before they go mainstream',
-                antigravity: 'Most AI channels focus on news; tool testing is underserved',
-                strategy: 'Weekly tool tests, before/after comparisons, honest reviews',
-                monetization: {
-                    virality: 'Trending AI tool announcements',
-                    affiliate: 'AI tool affiliate programs (high commissions)',
-                    brand: 'Become the go-to AI tool authority',
-                    community: 'Discord for AI enthusiasts'
-                }
-            },
             {
                 name: 'Code in 60 Seconds',
                 concept: 'Ultra-short coding tutorials solving one specific problem',
@@ -38,6 +26,58 @@ const nicheDatabase = {
                     affiliate: 'Beginner-friendly tech products',
                     brand: 'The tech translator',
                     community: 'Supportive beginner community'
+                }
+            },
+            {
+                name: 'Gadget Unboxing Lab',
+                concept: 'Honest tech reviews with real-world testing',
+                antigravity: 'Sponsored reviews are common; honest testing is rare',
+                strategy: 'Buy products, test thoroughly, show pros and cons',
+                monetization: {
+                    virality: 'Controversial honest opinions',
+                    affiliate: 'Tech product recommendations',
+                    brand: 'Trusted tech reviewer',
+                    community: 'Tech enthusiasts'
+                }
+            }
+        ]
+    },
+    'ai': {
+        ideas: [
+            {
+                name: 'AI Tool Hunter',
+                concept: 'Testing and reviewing AI tools before they go mainstream',
+                antigravity: 'Most AI channels focus on news; tool testing is underserved',
+                strategy: 'Weekly tool tests, before/after comparisons, honest reviews',
+                monetization: {
+                    virality: 'Trending AI tool announcements',
+                    affiliate: 'AI tool affiliate programs (high commissions)',
+                    brand: 'Become the go-to AI tool authority',
+                    community: 'Discord for AI enthusiasts'
+                }
+            },
+            {
+                name: 'AI vs Human Challenge',
+                concept: 'Comparing AI outputs with human work in various tasks',
+                antigravity: 'AI news is saturated; practical comparisons are valuable',
+                strategy: 'Weekly challenges, side-by-side comparisons, honest results',
+                monetization: {
+                    virality: 'Surprising AI capabilities',
+                    affiliate: 'AI tool subscriptions',
+                    brand: 'AI testing expert',
+                    community: 'AI experimenters'
+                }
+            },
+            {
+                name: 'AI Automation Hacks',
+                concept: 'Teaching people how to automate daily tasks with AI',
+                antigravity: 'Complex AI tutorials exist; simple automation guides are rare',
+                strategy: 'Step-by-step automation tutorials, real-world examples',
+                monetization: {
+                    virality: 'Time-saving AI hacks',
+                    affiliate: 'AI automation tools',
+                    brand: 'AI productivity guru',
+                    community: 'Automation seekers'
                 }
             }
         ]
@@ -202,7 +242,7 @@ const nicheDatabase = {
             }
         ]
     },
-    'faceless-motivation': {
+    'motivation': {
         ideas: [
             {
                 name: 'Stoic Shorts',
@@ -358,7 +398,7 @@ function generateFirstVideoIdea(category, tone, language) {
             relaxing: 'Gentle morning stretches for better sleep',
             'high-energy': '5-MINUTE OFFICE WORKOUT THAT CHANGED MY LIFE!'
         },
-        'faceless-motivation': {
+        'motivation': {
             humorous: 'Stoic philosophy vs. modern dating... surprisingly useful',
             serious: 'How Marcus Aurelius would handle your problems',
             relaxing: 'Daily wisdom for a calmer mind',

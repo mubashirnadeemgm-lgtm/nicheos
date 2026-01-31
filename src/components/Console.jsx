@@ -95,7 +95,6 @@ const Console = ({ onBack }) => {
                             options={[
                                 { value: 'youtube-shorts', label: 'YouTube Shorts (9:16)' },
                                 { value: 'long-form', label: 'Long Form (16:9)' },
-                                { value: 'linkedin-video', label: 'LinkedIn Video' },
                             ]}
                             placeholder="Select platform format"
                         />
@@ -112,12 +111,13 @@ const Console = ({ onBack }) => {
                                 value={category}
                                 onChange={setCategory}
                                 options={[
-                                    { value: 'tech-ai', label: 'Tech & AI' },
+                                    { value: 'tech', label: 'Tech' },
+                                    { value: 'ai', label: 'AI' },
                                     { value: 'lifestyle-vlogs', label: 'Lifestyle & Vlogs' },
                                     { value: 'gaming', label: 'Gaming' },
                                     { value: 'business-finance', label: 'Business & Finance' },
                                     { value: 'health-fitness', label: 'Health & Fitness' },
-                                    { value: 'faceless-motivation', label: 'Faceless Motivation' },
+                                    { value: 'motivation', label: 'Motivation' },
                                 ]}
                                 placeholder="Select category"
                             />
