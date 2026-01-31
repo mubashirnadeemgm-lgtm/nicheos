@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Sparkles, Loader2 } from 'lucide-react'
+import { ArrowLeft, Sparkles, Loader2, Key, AlertCircle } from 'lucide-react'
 import SelectDropdown from './SelectDropdown'
 import AntigravityResults from './AntigravityResults'
-import { generateAntigravityIdeas } from '../lib/nicheGenerator'
 
 const Console = ({ onBack }) => {
     const [platform, setPlatform] = useState('')
@@ -20,10 +19,20 @@ const Console = ({ onBack }) => {
     const [language, setLanguage] = useState('')
     const [customLanguage, setCustomLanguage] = useState('')
     const [timeCommitment, setTimeCommitment] = useState('')
+
+    // API Keys
+    const [geminiApiKey, setGeminiApiKey] = useState('')
+    const [serpApiKey, setSerpApiKey] = useState('')
+
+    // State management
     const [result, setResult] = useState(null)
     const [isGenerating, setIsGenerating] = useState(false)
+    const [error, setError] = useState(null)
 
-    const handleGenerate = () => {
+    const handleGenerate = async () => {
+        // Clear previous errors
+        setError(null)
+
         // Get final values (use custom if "define-below" is selected)
         const finalCategory = category === 'define-below' ? customCategory : category
         const finalPresenter = presenter === 'define-below' ? customPresenter : presenter
@@ -31,30 +40,60 @@ const Console = ({ onBack }) => {
         const finalBudget = budget === 'define-below' ? customBudget : budget
         const finalLanguage = language === 'define-below' ? customLanguage : language
 
+        // Validation
         if (!platform || !finalCategory || !audience || !finalPresenter || !finalTone || !finalBudget || !goal || !finalLanguage || !timeCommitment) {
-            alert('Please fill in all required fields')
+            setError('Please fill in all required fields')
+            return
+        }
+
+        if (!geminiApiKey.trim()) {
+            setError('Gemini API Key is required to generate ideas')
             return
         }
 
         setIsGenerating(true)
         setResult(null)
 
-        // Simulate Antigravity Engine processing
-        setTimeout(() => {
-            const generatedIdeas = generateAntigravityIdeas({
-                platform,
-                category: finalCategory,
-                audience,
-                presenter: finalPresenter,
-                tone: finalTone,
-                budget: finalBudget,
-                goal,
-                language: finalLanguage,
-                timeCommitment,
+        // Construct payload for N8N webhook
+        const payload = {
+            platform_format: platform,
+            category: finalCategory,
+            target_audience: audience,
+            presenter_style: finalPresenter,
+            tone_vibe: finalTone,
+            budget: finalBudget,
+            goal: goal,
+            language: finalLanguage,
+            time_commitment: timeCommitment,
+            avoided_categories: '', // Can be extended later
+            gemini_api_key: geminiApiKey,
+            serp_api_key: serpApiKey || ''
+        }
+
+        try {
+            // POST request to N8N webhook
+            const response = await fetch('https://arthor478.app.n8n.cloud/webhook-test/viralspy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
             })
-            setResult(generatedIdeas)
+
+            if (!response.ok) {
+                throw new Error(`Webhook error: ${response.status} ${response.statusText}`)
+            }
+
+            const data = await response.json()
+
+            // Set the result from webhook response
+            setResult(data)
             setIsGenerating(false)
-        }, 2500)
+        } catch (err) {
+            console.error('Error calling webhook:', err)
+            setError(`Failed to generate ideas: ${err.message}. Please check your API keys and try again.`)
+            setIsGenerating(false)
+        }
     }
 
     return (
@@ -320,6 +359,65 @@ const Console = ({ onBack }) => {
                             />
                         </div>
                     </div>
+
+                    {/* API Keys Section */}
+                    <div className="border-t border-gray-200 pt-6 mb-6">
+                        <div className="flex items-center gap-2 mb-4">
+                            <Key className="w-5 h-5 text-purple-600" />
+                            <h3 className="text-lg font-semibold text-gray-900">API Configuration</h3>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-6">
+                            {/* Gemini API Key */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Gemini API Key <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="password"
+                                    value={geminiApiKey}
+                                    onChange={(e) => setGeminiApiKey(e.target.value)}
+                                    placeholder="Paste your Gemini API Key here"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm"
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    Required for generating ideas.
+                                </p>
+                            </div>
+
+                            {/* SerpApi Key */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    SerpApi Key <span className="text-gray-400">(Optional)</span>
+                                </label>
+                                <input
+                                    type="password"
+                                    value={serpApiKey}
+                                    onChange={(e) => setSerpApiKey(e.target.value)}
+                                    placeholder="Paste SerpApi Key (Optional)"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm"
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    Optional: Add this for real-time search data and better results.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Error Display */}
+                    {error && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3"
+                        >
+                            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                            <div>
+                                <p className="text-sm font-medium text-red-900">Error</p>
+                                <p className="text-sm text-red-700 mt-1">{error}</p>
+                            </div>
+                        </motion.div>
+                    )}
 
                     {/* Generate Button */}
                     <motion.button
