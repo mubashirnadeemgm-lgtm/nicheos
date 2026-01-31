@@ -116,13 +116,38 @@ const Console = ({ onBack }) => {
             console.log('Extracted ideas array:', ideasArray)
             console.log('Ideas array length:', Array.isArray(ideasArray) ? ideasArray.length : 'Not an array')
 
+            // Final validation: Ensure we have a valid array
+            if (!Array.isArray(ideasArray)) {
+                console.error('Failed to extract array from response')
+                throw new Error('Invalid response format: Expected an array of niches')
+            }
+
+            if (ideasArray.length === 0) {
+                console.warn('Webhook returned empty array')
+            }
+
             // Set the result from webhook response
             setResult(ideasArray)
             setIsGenerating(false)
         } catch (err) {
             console.error('Error calling webhook:', err)
-            setError(`Failed to generate ideas: ${err.message}. Please check your API keys and try again.`)
+
+            // Detailed error message
+            let errorMessage = 'Failed to generate ideas: '
+
+            if (err.message.includes('Failed to fetch')) {
+                errorMessage += 'Network error. Please check your internet connection.'
+            } else if (err.message.includes('Webhook error')) {
+                errorMessage += 'The webhook returned an error. Please check your API keys.'
+            } else if (err.name === 'SyntaxError') {
+                errorMessage += 'Invalid response format from webhook. Please check your N8N workflow.'
+            } else {
+                errorMessage += err.message
+            }
+
+            setError(errorMessage)
             setIsGenerating(false)
+            setResult(null) // Clear any previous results
         }
     }
 
