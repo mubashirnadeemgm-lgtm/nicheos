@@ -8,18 +8,30 @@ import { generateAntigravityIdeas } from '../lib/nicheGenerator'
 const Console = ({ onBack }) => {
     const [platform, setPlatform] = useState('')
     const [category, setCategory] = useState('')
+    const [customCategory, setCustomCategory] = useState('')
     const [audience, setAudience] = useState('')
     const [presenter, setPresenter] = useState('')
+    const [customPresenter, setCustomPresenter] = useState('')
     const [tone, setTone] = useState('')
+    const [customTone, setCustomTone] = useState('')
     const [budget, setBudget] = useState('')
+    const [customBudget, setCustomBudget] = useState('')
     const [goal, setGoal] = useState('')
     const [language, setLanguage] = useState('')
+    const [customLanguage, setCustomLanguage] = useState('')
     const [timeCommitment, setTimeCommitment] = useState('')
     const [result, setResult] = useState(null)
     const [isGenerating, setIsGenerating] = useState(false)
 
     const handleGenerate = () => {
-        if (!platform || !category || !audience || !presenter || !tone || !budget || !goal || !language || !timeCommitment) {
+        // Get final values (use custom if "define-below" is selected)
+        const finalCategory = category === 'define-below' ? customCategory : category
+        const finalPresenter = presenter === 'define-below' ? customPresenter : presenter
+        const finalTone = tone === 'define-below' ? customTone : tone
+        const finalBudget = budget === 'define-below' ? customBudget : budget
+        const finalLanguage = language === 'define-below' ? customLanguage : language
+
+        if (!platform || !finalCategory || !audience || !finalPresenter || !finalTone || !finalBudget || !goal || !finalLanguage || !timeCommitment) {
             alert('Please fill in all required fields')
             return
         }
@@ -31,13 +43,13 @@ const Console = ({ onBack }) => {
         setTimeout(() => {
             const generatedIdeas = generateAntigravityIdeas({
                 platform,
-                category,
+                category: finalCategory,
                 audience,
-                presenter,
-                tone,
-                budget,
+                presenter: finalPresenter,
+                tone: finalTone,
+                budget: finalBudget,
                 goal,
-                language,
+                language: finalLanguage,
                 timeCommitment,
             })
             setResult(generatedIdeas)
@@ -118,9 +130,21 @@ const Console = ({ onBack }) => {
                                     { value: 'business-finance', label: 'Business & Finance' },
                                     { value: 'health-fitness', label: 'Health & Fitness' },
                                     { value: 'motivation', label: 'Motivation' },
+                                    { value: 'define-below', label: 'Define Below' },
                                 ]}
                                 placeholder="Select category"
                             />
+                            {category === 'define-below' && (
+                                <motion.input
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    type="text"
+                                    value={customCategory}
+                                    onChange={(e) => setCustomCategory(e.target.value)}
+                                    placeholder="Enter your category..."
+                                    className="mt-3 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                />
+                            )}
                         </div>
 
                         {/* Target Audience */}
@@ -154,9 +178,21 @@ const Console = ({ onBack }) => {
                                     { value: 'faceless-voiceover', label: 'Faceless Voiceover' },
                                     { value: 'ai-avatar', label: 'AI Avatar' },
                                     { value: 'text-asmr', label: 'Text/ASMR Only' },
+                                    { value: 'define-below', label: 'Define Below' },
                                 ]}
                                 placeholder="Select presenter style"
                             />
+                            {presenter === 'define-below' && (
+                                <motion.input
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    type="text"
+                                    value={customPresenter}
+                                    onChange={(e) => setCustomPresenter(e.target.value)}
+                                    placeholder="Enter your presenter style..."
+                                    className="mt-3 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                />
+                            )}
                         </div>
 
                         {/* Tone/Vibe */}
@@ -172,9 +208,21 @@ const Console = ({ onBack }) => {
                                     { value: 'serious', label: 'Serious/Educational' },
                                     { value: 'relaxing', label: 'Relaxing/Calm' },
                                     { value: 'high-energy', label: 'High Energy/Hype' },
+                                    { value: 'define-below', label: 'Define Below' },
                                 ]}
                                 placeholder="Select tone"
                             />
+                            {tone === 'define-below' && (
+                                <motion.input
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    type="text"
+                                    value={customTone}
+                                    onChange={(e) => setCustomTone(e.target.value)}
+                                    placeholder="Enter your tone/vibe..."
+                                    className="mt-3 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                />
+                            )}
                         </div>
 
                         {/* Budget/Resources */}
@@ -189,9 +237,21 @@ const Console = ({ onBack }) => {
                                     { value: 'zero', label: '$0 (Smartphone only)' },
                                     { value: 'low', label: 'Low Budget (Basic PC)' },
                                     { value: 'high', label: 'High Production (Studio Quality)' },
+                                    { value: 'define-below', label: 'Define Below' },
                                 ]}
                                 placeholder="Select budget"
                             />
+                            {budget === 'define-below' && (
+                                <motion.input
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    type="text"
+                                    value={customBudget}
+                                    onChange={(e) => setCustomBudget(e.target.value)}
+                                    placeholder="Enter your budget/resources..."
+                                    className="mt-3 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                />
+                            )}
                         </div>
 
                         {/* Goal */}
@@ -207,6 +267,7 @@ const Console = ({ onBack }) => {
                                     { value: 'affiliate', label: 'Affiliate Income' },
                                     { value: 'brand', label: 'Brand Building' },
                                     { value: 'community', label: 'Community' },
+                                    { value: 'income', label: 'Income' },
                                 ]}
                                 placeholder="Select goal"
                             />
@@ -225,9 +286,21 @@ const Console = ({ onBack }) => {
                                     { value: 'urdu', label: 'Urdu (اردو)' },
                                     { value: 'punjabi', label: 'Punjabi (ਪੰਜਾਬੀ)' },
                                     { value: 'hindi', label: 'Hindi (हिंदी)' },
+                                    { value: 'define-below', label: 'Define Below' },
                                 ]}
                                 placeholder="Select language"
                             />
+                            {language === 'define-below' && (
+                                <motion.input
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    type="text"
+                                    value={customLanguage}
+                                    onChange={(e) => setCustomLanguage(e.target.value)}
+                                    placeholder="Enter your language..."
+                                    className="mt-3 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                />
+                            )}
                         </div>
 
                         {/* Time Commitment */}
