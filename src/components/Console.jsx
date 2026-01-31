@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Sparkles, Loader2 } from 'lucide-react'
 import SelectDropdown from './SelectDropdown'
-import ResultCard from './ResultCard'
-import { generateNiche } from '../lib/nicheGenerator'
+import AntigravityResults from './AntigravityResults'
+import { generateAntigravityIdeas } from '../lib/nicheGenerator'
 
 const Console = ({ onBack }) => {
     const [platform, setPlatform] = useState('')
@@ -13,21 +13,23 @@ const Console = ({ onBack }) => {
     const [tone, setTone] = useState('')
     const [budget, setBudget] = useState('')
     const [goal, setGoal] = useState('')
+    const [language, setLanguage] = useState('')
+    const [timeCommitment, setTimeCommitment] = useState('')
     const [result, setResult] = useState(null)
     const [isGenerating, setIsGenerating] = useState(false)
 
     const handleGenerate = () => {
-        if (!platform || !category || !audience || !presenter || !tone || !budget || !goal) {
-            alert('Please fill in all fields')
+        if (!platform || !category || !audience || !presenter || !tone || !budget || !goal || !language || !timeCommitment) {
+            alert('Please fill in all required fields')
             return
         }
 
         setIsGenerating(true)
         setResult(null)
 
-        // Simulate processing time
+        // Simulate Antigravity Engine processing
         setTimeout(() => {
-            const generatedNiche = generateNiche({
+            const generatedIdeas = generateAntigravityIdeas({
                 platform,
                 category,
                 audience,
@@ -35,10 +37,12 @@ const Console = ({ onBack }) => {
                 tone,
                 budget,
                 goal,
+                language,
+                timeCommitment,
             })
-            setResult(generatedNiche)
+            setResult(generatedIdeas)
             setIsGenerating(false)
-        }, 2000)
+        }, 2500)
     }
 
     return (
@@ -49,7 +53,7 @@ const Console = ({ onBack }) => {
             exit={{ opacity: 0, y: 100 }}
             transition={{ duration: 0.5 }}
         >
-            <div className="max-w-5xl mx-auto">
+            <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <motion.div
                     className="mb-8 flex items-center justify-between"
@@ -64,10 +68,13 @@ const Console = ({ onBack }) => {
                         <ArrowLeft className="w-5 h-5" />
                         <span className="text-sm font-medium">Back</span>
                     </button>
-                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                        NicheOS Console
-                    </h1>
-                    <div className="w-20" /> {/* Spacer for centering */}
+                    <div className="text-center">
+                        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+                            Antigravity Engine
+                        </h1>
+                        <p className="text-sm text-gray-500 mt-1">YouTube Growth Strategist</p>
+                    </div>
+                    <div className="w-20" /> {/* Spacer */}
                 </motion.div>
 
                 {/* Console Panel */}
@@ -78,7 +85,7 @@ const Console = ({ onBack }) => {
                     transition={{ delay: 0.3, duration: 0.4 }}
                 >
                     {/* Platform Format */}
-                    <div className="mb-8">
+                    <div className="mb-6">
                         <label className="block text-sm font-medium text-gray-700 mb-3">
                             Platform Format
                         </label>
@@ -95,8 +102,8 @@ const Console = ({ onBack }) => {
                         />
                     </div>
 
-                    {/* Grid of Options */}
-                    <div className="grid md:grid-cols-2 gap-6 mb-8">
+                    {/* Grid of Options - 3 columns */}
+                    <div className="grid md:grid-cols-3 gap-6 mb-6">
                         {/* Category */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -205,6 +212,41 @@ const Console = ({ onBack }) => {
                                 placeholder="Select goal"
                             />
                         </div>
+
+                        {/* Language */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-3">
+                                Language
+                            </label>
+                            <SelectDropdown
+                                value={language}
+                                onChange={setLanguage}
+                                options={[
+                                    { value: 'english', label: 'English' },
+                                    { value: 'urdu', label: 'Urdu (اردو)' },
+                                    { value: 'punjabi', label: 'Punjabi (ਪੰਜਾਬੀ)' },
+                                    { value: 'hindi', label: 'Hindi (हिंदी)' },
+                                ]}
+                                placeholder="Select language"
+                            />
+                        </div>
+
+                        {/* Time Commitment */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-3">
+                                Time Commitment
+                            </label>
+                            <SelectDropdown
+                                value={timeCommitment}
+                                onChange={setTimeCommitment}
+                                options={[
+                                    { value: 'low', label: '0-5 hours/week' },
+                                    { value: 'medium', label: '5-15 hours/week' },
+                                    { value: 'high', label: '15+ hours/week' },
+                                ]}
+                                placeholder="Select time commitment"
+                            />
+                        </div>
                     </div>
 
                     {/* Generate Button */}
@@ -222,20 +264,20 @@ const Console = ({ onBack }) => {
                             {isGenerating ? (
                                 <>
                                     <Loader2 className="w-5 h-5 animate-spin" />
-                                    Computing...
+                                    Antigravity Engine Computing...
                                 </>
                             ) : (
                                 <>
                                     <Sparkles className="w-5 h-5" />
-                                    GENERATE IDENTITY
+                                    GENERATE 3 CHANNEL IDEAS
                                 </>
                             )}
                         </span>
                     </motion.button>
                 </motion.div>
 
-                {/* Result Card */}
-                {result && <ResultCard result={result} />}
+                {/* Results */}
+                {result && <AntigravityResults ideas={result} />}
             </div>
         </motion.div>
     )

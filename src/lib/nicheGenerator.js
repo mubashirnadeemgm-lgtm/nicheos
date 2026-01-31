@@ -1,173 +1,392 @@
-// Niche Generation Algorithm
-// This generates unique channel identities based on user selections
+// Antigravity Engine - Advanced YouTube Niche Generation
+// Generates 3 comprehensive channel ideas based on user profile
 
 const nicheDatabase = {
     'tech-ai': {
-        names: ['TechBytes', 'AI Insights', 'CodeCraft', 'Digital Frontier', 'Neural Network'],
-        hooks: [
-            'I tested 10 AI tools so you don\'t have to',
-            'This AI will change everything in 2026',
-            'The truth about AI nobody talks about',
-        ],
+        ideas: [
+            {
+                name: 'AI Tool Hunter',
+                concept: 'Testing and reviewing AI tools before they go mainstream',
+                antigravity: 'Most AI channels focus on news; tool testing is underserved',
+                strategy: 'Weekly tool tests, before/after comparisons, honest reviews',
+                monetization: {
+                    virality: 'Trending AI tool announcements',
+                    affiliate: 'AI tool affiliate programs (high commissions)',
+                    brand: 'Become the go-to AI tool authority',
+                    community: 'Discord for AI enthusiasts'
+                }
+            },
+            {
+                name: 'Code in 60 Seconds',
+                concept: 'Ultra-short coding tutorials solving one specific problem',
+                antigravity: 'Long tutorials saturated; micro-learning is growing',
+                strategy: 'Problem → Solution → Code in under 60 seconds',
+                monetization: {
+                    virality: 'Solve trending dev problems',
+                    affiliate: 'Course and tool recommendations',
+                    brand: 'Quick-fix coding expert',
+                    community: 'GitHub community'
+                }
+            },
+            {
+                name: 'Tech for Grandma',
+                concept: 'Explaining complex tech in the simplest way possible',
+                antigravity: 'Tech content assumes knowledge; beginners are ignored',
+                strategy: 'Use analogies, no jargon, step-by-step visuals',
+                monetization: {
+                    virality: 'Trending tech explained simply',
+                    affiliate: 'Beginner-friendly tech products',
+                    brand: 'The tech translator',
+                    community: 'Supportive beginner community'
+                }
+            }
+        ]
     },
     'lifestyle-vlogs': {
-        names: ['Daily Dose', 'Life Unfiltered', 'The Real Story', 'Everyday Magic', 'Vibe Check'],
-        hooks: [
-            'A day in my life that changed everything',
-            'What nobody tells you about this lifestyle',
-            'I tried living like this for 30 days',
-        ],
+        ideas: [
+            {
+                name: 'The $100 Week Challenge',
+                concept: 'Living on extreme budgets in different cities',
+                antigravity: 'Luxury vlogs are saturated; frugal living is trending',
+                strategy: 'Weekly challenges, budget breakdowns, survival tips',
+                monetization: {
+                    virality: 'Extreme budget challenges',
+                    affiliate: 'Budget travel and living products',
+                    brand: 'Frugal living expert',
+                    community: 'Budget-conscious community'
+                }
+            },
+            {
+                name: 'Silent City',
+                concept: 'Cinematic city walks with ambient sound, no talking',
+                antigravity: 'Commentary vlogs are noisy; ASMR walking is peaceful niche',
+                strategy: 'High-quality walking tours, binaural audio, 4K visuals',
+                monetization: {
+                    virality: 'Unique city locations',
+                    affiliate: 'Camera and audio gear',
+                    brand: 'Meditative travel content',
+                    community: 'Relaxation seekers'
+                }
+            },
+            {
+                name: 'Reverse Routine',
+                concept: 'Living life in reverse order for productivity experiments',
+                antigravity: 'Morning routines are overdone; reverse psychology is fresh',
+                strategy: 'Start with night routine, work backwards, track results',
+                monetization: {
+                    virality: 'Unusual productivity hacks',
+                    affiliate: 'Productivity tools and apps',
+                    brand: 'Unconventional lifestyle guru',
+                    community: 'Productivity experimenters'
+                }
+            }
+        ]
     },
     'gaming': {
-        names: ['GameVault', 'Pro Plays', 'Level Up', 'Gaming Arena', 'Quest Master'],
-        hooks: [
-            'This strategy got me to top 1%',
-            'The most broken build in the game',
-            'I spent 100 hours testing this',
-        ],
+        ideas: [
+            {
+                name: 'Noob to Pro in 30 Days',
+                concept: 'Complete beginner learns competitive game from scratch',
+                antigravity: 'Pro gameplay is common; learning journeys are relatable',
+                strategy: 'Daily progress videos, mistakes shown, coaching sessions',
+                monetization: {
+                    virality: 'Dramatic improvement stories',
+                    affiliate: 'Gaming gear and coaching',
+                    brand: 'Relatable gaming journey',
+                    community: 'Learning gamers'
+                }
+            },
+            {
+                name: 'Game Economics Lab',
+                concept: 'Analyzing in-game economies like real-world markets',
+                antigravity: 'Gameplay is saturated; economic analysis is unique',
+                strategy: 'Market trends, inflation analysis, trading strategies',
+                monetization: {
+                    virality: 'Game economy crashes/booms',
+                    affiliate: 'Trading guides and tools',
+                    brand: 'Gaming economist',
+                    community: 'Strategic traders'
+                }
+            },
+            {
+                name: 'Retro Remix',
+                concept: 'Playing classic games with modern speedrun techniques',
+                antigravity: 'New games are crowded; retro nostalgia is growing',
+                strategy: 'Old games, new strategies, nostalgia + skill',
+                monetization: {
+                    virality: 'Nostalgic game moments',
+                    affiliate: 'Retro gaming equipment',
+                    brand: 'Retro speedrun specialist',
+                    community: 'Nostalgic gamers'
+                }
+            }
+        ]
     },
     'business-finance': {
-        names: ['Wealth Wisdom', 'Money Moves', 'Finance First', 'Capital Growth', 'Business Brain'],
-        hooks: [
-            'How I made $10k with this simple strategy',
-            'The investment everyone is missing',
-            '5 money mistakes keeping you broke',
-        ],
+        ideas: [
+            {
+                name: 'Side Hustle Autopsy',
+                concept: 'Analyzing failed side hustles to learn what NOT to do',
+                antigravity: 'Success stories are common; failure analysis is rare',
+                strategy: 'Interview failed entrepreneurs, extract lessons, prevent mistakes',
+                monetization: {
+                    virality: 'Shocking failure stories',
+                    affiliate: 'Business tools and courses',
+                    brand: 'Failure prevention expert',
+                    community: 'Aspiring entrepreneurs'
+                }
+            },
+            {
+                name: 'Salary Negotiation Lab',
+                concept: 'Real salary negotiations with expert commentary',
+                antigravity: 'Generic advice is common; real examples are scarce',
+                strategy: 'Role-play negotiations, breakdown tactics, results tracking',
+                monetization: {
+                    virality: 'Dramatic negotiation wins',
+                    affiliate: 'Career coaching and courses',
+                    brand: 'Negotiation specialist',
+                    community: 'Career advancers'
+                }
+            },
+            {
+                name: 'Micro-Investing Daily',
+                concept: 'Investing $1-$10 daily and tracking long-term results',
+                antigravity: 'Big investment channels intimidate; micro is accessible',
+                strategy: 'Daily small investments, compound tracking, beginner-friendly',
+                monetization: {
+                    virality: 'Surprising compound results',
+                    affiliate: 'Investment apps and platforms',
+                    brand: 'Accessible investing advocate',
+                    community: 'Beginner investors'
+                }
+            }
+        ]
     },
     'health-fitness': {
-        names: ['FitLife', 'Wellness Way', 'Strong Mind', 'Health Hub', 'Peak Performance'],
-        hooks: [
-            'I lost 20 pounds doing this one thing',
-            'The workout that actually works',
-            'What trainers don\'t want you to know',
-        ],
+        ideas: [
+            {
+                name: 'Desk Warrior Fitness',
+                concept: '5-minute workouts designed for office workers',
+                antigravity: 'Gym content is saturated; desk exercises are underserved',
+                strategy: 'No equipment, office-friendly, quick results',
+                monetization: {
+                    virality: 'Office transformation stories',
+                    affiliate: 'Desk fitness equipment',
+                    brand: 'Corporate wellness expert',
+                    community: 'Office workers'
+                }
+            },
+            {
+                name: 'Food Forensics',
+                concept: 'Investigating what\'s really in popular foods',
+                antigravity: 'Recipe channels are common; food investigation is unique',
+                strategy: 'Ingredient deep-dives, lab tests, health impacts',
+                monetization: {
+                    virality: 'Shocking food revelations',
+                    affiliate: 'Health food products',
+                    brand: 'Food truth advocate',
+                    community: 'Health-conscious eaters'
+                }
+            },
+            {
+                name: 'Sleep Hacker',
+                concept: 'Experimenting with sleep optimization techniques',
+                antigravity: 'Workout content is crowded; sleep optimization is growing',
+                strategy: 'Weekly sleep experiments, data tracking, results analysis',
+                monetization: {
+                    virality: 'Unusual sleep hacks',
+                    affiliate: 'Sleep products and trackers',
+                    brand: 'Sleep optimization expert',
+                    community: 'Sleep-deprived audience'
+                }
+            }
+        ]
     },
     'faceless-motivation': {
-        names: ['Mindset Shift', 'Rise Daily', 'Success Path', 'Motivation Station', 'Growth Mode'],
-        hooks: [
-            'This mindset changed my entire life',
-            'The one habit that separates winners',
-            'Stop wasting your potential',
-        ],
-    },
-}
-
-const audienceModifiers = {
-    'gen-z': ' | Fast & Viral',
-    'millennials': ' Pro',
-    'kids-family': ' Family',
-    'universal': ' Global',
-}
-
-const presenterInsights = {
-    'on-camera': 'Personal connection drives engagement',
-    'faceless-voiceover': 'Lower barrier to entry, focus on content',
-    'ai-avatar': 'Scalable and consistent production',
-    'text-asmr': 'Minimal equipment, high retention',
-}
-
-const toneInsights = {
-    'humorous': 'Entertainment value increases shareability',
-    'serious': 'Authority building for long-term trust',
-    'relaxing': 'High watch time and loyal audience',
-    'high-energy': 'Maximum engagement and virality',
-}
-
-const budgetInsights = {
-    'zero': 'Start immediately with what you have',
-    'low': 'Basic quality with room to grow',
-    'high': 'Professional quality from day one',
-}
-
-const goalInsights = {
-    'virality': 'Focus on trending topics and hooks',
-    'affiliate': 'Product reviews and recommendations',
-    'brand': 'Consistent posting and unique voice',
-    'community': 'Engagement and interaction priority',
-}
-
-const monetizationRatings = {
-    'tech-ai': { virality: 4, affiliate: 5, brand: 5, community: 4 },
-    'lifestyle-vlogs': { virality: 5, affiliate: 4, brand: 5, community: 5 },
-    'gaming': { virality: 5, affiliate: 4, brand: 4, community: 5 },
-    'business-finance': { virality: 3, affiliate: 5, brand: 5, community: 4 },
-    'health-fitness': { virality: 4, affiliate: 5, brand: 5, community: 4 },
-    'faceless-motivation': { virality: 5, affiliate: 3, brand: 4, community: 3 },
-}
-
-export function generateNiche(config) {
-    const { platform, category, audience, presenter, tone, budget, goal } = config
-
-    // Get category data
-    const categoryData = nicheDatabase[category]
-
-    // Generate channel name
-    const baseName = categoryData.names[Math.floor(Math.random() * categoryData.names.length)]
-    const channelName = baseName + (audienceModifiers[audience] || '')
-
-    // Generate niche definition
-    const nicheDefinition = generateNicheDefinition(category, audience, presenter, tone, platform)
-
-    // Get viral hook
-    const viralHook = categoryData.hooks[Math.floor(Math.random() * categoryData.hooks.length)]
-
-    // Calculate monetization rating
-    const monetizationRating = monetizationRatings[category][goal] || 3
-
-    // Generate insights
-    const insights = [
-        presenterInsights[presenter],
-        toneInsights[tone],
-        budgetInsights[budget],
-        goalInsights[goal],
-    ]
-
-    return {
-        channelName,
-        nicheDefinition,
-        viralHook,
-        monetizationRating,
-        insights,
+        ideas: [
+            {
+                name: 'Stoic Shorts',
+                concept: 'Ancient Stoic wisdom applied to modern problems',
+                antigravity: 'Generic motivation is saturated; philosophy is timeless',
+                strategy: 'Stoic quotes + modern scenarios, cinematic visuals',
+                monetization: {
+                    virality: 'Relatable modern struggles',
+                    affiliate: 'Philosophy books and courses',
+                    brand: 'Modern Stoic teacher',
+                    community: 'Philosophy seekers'
+                }
+            },
+            {
+                name: 'Failure Highlight Reel',
+                concept: 'Celebrating famous failures before success',
+                antigravity: 'Success stories are common; failure normalization is needed',
+                strategy: 'Historical failures, modern examples, inspiring comebacks',
+                monetization: {
+                    virality: 'Surprising failure stories',
+                    affiliate: 'Personal development products',
+                    brand: 'Resilience advocate',
+                    community: 'Struggling achievers'
+                }
+            },
+            {
+                name: 'The 1% Rule',
+                concept: 'Tiny daily improvements tracked over time',
+                antigravity: 'Big transformations intimidate; small steps are achievable',
+                strategy: 'Daily 1% improvement challenges, long-term tracking',
+                monetization: {
+                    virality: 'Dramatic long-term results',
+                    affiliate: 'Habit tracking apps',
+                    brand: 'Incremental growth expert',
+                    community: 'Consistent improvers'
+                }
+            }
+        ]
     }
 }
 
-function generateNicheDefinition(category, audience, presenter, tone, platform) {
-    const categoryNames = {
-        'tech-ai': 'technology and AI',
-        'lifestyle-vlogs': 'lifestyle and daily experiences',
-        'gaming': 'gaming',
-        'business-finance': 'business and finance',
-        'health-fitness': 'health and fitness',
-        'faceless-motivation': 'motivational content',
+export function generateAntigravityIdeas(config) {
+    const {
+        platform,
+        category,
+        audience,
+        presenter,
+        tone,
+        budget,
+        goal,
+        language = 'english',
+        timeCommitment = 'medium',
+        avoidTopics = []
+    } = config
+
+    const categoryIdeas = nicheDatabase[category]?.ideas || []
+
+    // Generate 3 customized ideas
+    const ideas = categoryIdeas.map((idea, index) => {
+        return {
+            channelName: customizeChannelName(idea.name, audience, language),
+            concept: idea.concept,
+            antigravity: idea.antigravity,
+            contentStrategy: generateContentStrategy(idea.strategy, presenter, budget, timeCommitment, platform),
+            monetization: idea.monetization[goal] || idea.monetization.brand,
+            firstVideoIdea: generateFirstVideoIdea(category, tone, language),
+            weeklyWorkflow: generateWeeklyWorkflow(timeCommitment, presenter, budget)
+        }
+    })
+
+    return ideas
+}
+
+function customizeChannelName(baseName, audience, language) {
+    const audienceModifiers = {
+        'gen-z': ' HQ',
+        'millennials': ' Pro',
+        'kids-family': ' Family',
+        'universal': ''
     }
 
-    const audienceNames = {
-        'gen-z': 'Gen Z viewers seeking fast-paced',
-        'millennials': 'professional millennials interested in',
-        'kids-family': 'families looking for',
-        'universal': 'a broad audience passionate about',
+    const languageModifiers = {
+        'urdu': ' اردو',
+        'punjabi': ' ਪੰਜਾਬੀ',
+        'hindi': ' हिंदी',
+        'english': ''
     }
 
-    const presenterStyles = {
-        'on-camera': 'with a personal, face-to-camera approach',
-        'faceless-voiceover': 'using engaging voiceover narration',
-        'ai-avatar': 'leveraging AI avatar technology',
-        'text-asmr': 'through text overlays and ASMR elements',
+    return baseName + (audienceModifiers[audience] || '') + (languageModifiers[language] || '')
+}
+
+function generateContentStrategy(baseStrategy, presenter, budget, timeCommitment, platform) {
+    let strategy = baseStrategy
+
+    // Adjust for presenter style
+    if (presenter === 'faceless-voiceover') {
+        strategy += '. Use stock footage or screen recordings with professional voiceover.'
+    } else if (presenter === 'ai-avatar') {
+        strategy += '. Create AI avatar presenter for consistent branding.'
+    } else if (presenter === 'text-asmr') {
+        strategy += '. Use text animations with calming background music.'
     }
 
-    const toneStyles = {
-        'humorous': 'delivered with humor and entertainment',
-        'serious': 'presented with educational depth',
-        'relaxing': 'crafted for relaxation and calm',
-        'high-energy': 'packed with high-energy excitement',
+    // Adjust for budget
+    if (budget === 'zero') {
+        strategy += ' Film on smartphone, edit with free apps like CapCut.'
+    } else if (budget === 'high') {
+        strategy += ' Use professional camera, lighting, and editing software.'
     }
 
-    const platformFormats = {
-        'youtube-shorts': 'optimized for YouTube Shorts',
-        'long-form': 'designed for long-form YouTube content',
-        'instagram-reels': 'tailored for Instagram Reels',
-        'linkedin-video': 'professional LinkedIn video format',
+    // Adjust for platform
+    const platformTips = {
+        'youtube-shorts': ' Keep under 60 seconds, vertical format, hook in first 3 seconds.',
+        'long-form': ' Aim for 8-15 minutes, chapters, strong intro/outro.',
+        'instagram-reels': ' 15-30 seconds, trending audio, text overlays.',
+        'linkedin-video': ' Professional tone, 1-3 minutes, value-first approach.'
     }
 
-    return `Create ${categoryNames[category]} content for ${audienceNames[audience]} ${categoryNames[category]}, ${presenterStyles[presenter]}, ${toneStyles[tone]}, ${platformFormats[platform]}.`
+    strategy += platformTips[platform] || ''
+
+    return strategy
+}
+
+function generateFirstVideoIdea(category, tone, language) {
+    const hooks = {
+        'tech-ai': {
+            humorous: 'I asked AI to plan my entire day... it went terribly wrong',
+            serious: 'The AI tool that will replace 50% of jobs in 2026',
+            relaxing: 'Peaceful coding session: Building an AI app from scratch',
+            'high-energy': 'I tested 10 AI tools in 10 minutes - HERE\'S THE WINNER!'
+        },
+        'lifestyle-vlogs': {
+            humorous: 'I lived on $5 a day for a week... here\'s what happened',
+            serious: 'The minimalist lifestyle nobody talks about',
+            relaxing: 'A quiet day in my simple life',
+            'high-energy': '24 HOURS IN THE CHEAPEST CITY IN THE WORLD!'
+        },
+        'gaming': {
+            humorous: 'I tried speedrunning as a complete noob... embarrassing',
+            serious: 'The economics of Fortnite\'s in-game market explained',
+            relaxing: 'Chill retro gaming: Super Mario 64 nostalgia',
+            'high-energy': 'NOOB TO PRO IN 24 HOURS - DAY 1 CHALLENGE!'
+        },
+        'business-finance': {
+            humorous: 'My side hustle failed in 3 days... here\'s why',
+            serious: 'The salary negotiation mistake costing you $50k',
+            relaxing: 'Building wealth slowly: My $5 daily investment journey',
+            'high-energy': 'I MADE $1000 IN ONE WEEK - HERE\'S EXACTLY HOW!'
+        },
+        'health-fitness': {
+            humorous: 'I tried every desk workout... my coworkers thought I was crazy',
+            serious: 'What\'s really in your protein powder? Lab results',
+            relaxing: 'Gentle morning stretches for better sleep',
+            'high-energy': '5-MINUTE OFFICE WORKOUT THAT CHANGED MY LIFE!'
+        },
+        'faceless-motivation': {
+            humorous: 'Stoic philosophy vs. modern dating... surprisingly useful',
+            serious: 'How Marcus Aurelius would handle your problems',
+            relaxing: 'Daily wisdom for a calmer mind',
+            'high-energy': 'THE 1% RULE THAT WILL CHANGE EVERYTHING!'
+        }
+    }
+
+    return hooks[category]?.[tone] || 'Your first viral video idea'
+}
+
+function generateWeeklyWorkflow(timeCommitment, presenter, budget) {
+    const workflows = {
+        'low': {
+            hours: '0-5 hours/week',
+            schedule: 'Film 1 video on weekend (1-2 hours), edit in 30-min sessions, post 1x/week',
+            tips: 'Batch record multiple videos, use templates, repurpose content'
+        },
+        'medium': {
+            hours: '5-15 hours/week',
+            schedule: 'Film 2-3 videos (3-4 hours), edit (4-6 hours), engage with audience (2-3 hours), post 2-3x/week',
+            tips: 'Create content calendar, engage daily, analyze metrics weekly'
+        },
+        'high': {
+            hours: '15+ hours/week',
+            schedule: 'Daily filming (1-2 hours), daily editing (2-3 hours), community management (1-2 hours), post daily',
+            tips: 'Treat as part-time job, invest in tools, build team eventually'
+        }
+    }
+
+    return workflows[timeCommitment] || workflows['medium']
 }
