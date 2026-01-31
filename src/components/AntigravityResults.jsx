@@ -67,7 +67,7 @@ const AntigravityResults = ({ ideas }) => {
             </div>
 
             {/* Ideas Grid */}
-            <div className="grid md:grid-cols-1 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {ideas.map((idea, index) => {
                     // Safely access properties with fallbacks
                     const nicheName = idea.niche_name || idea.channelName || `Niche Idea ${index + 1}`
@@ -77,7 +77,11 @@ const AntigravityResults = ({ ideas }) => {
                     const reasonForSuccess = idea.reason_for_success || idea.reasonForSuccess || idea.antigravity || 'High potential niche'
                     const contentSource = idea.content_source || idea.contentSource || idea.contentStrategy || 'Create original content'
                     const toolsNeeded = idea.tools_needed || idea.toolsNeeded || 'Basic equipment'
-                    const productionGuide = idea.production_guide || idea.productionGuide || idea.weeklyWorkflow?.schedule || 'Follow standard production workflow'
+                    // Handle production_guide as array or string
+                    let productionGuide = idea.production_guide || idea.productionGuide || idea.weeklyWorkflow?.schedule || 'Follow standard production workflow'
+                    if (Array.isArray(productionGuide)) {
+                        productionGuide = productionGuide.join('\n')
+                    }
 
                     // Determine virality badge color
                     const getViralityColor = (score) => {

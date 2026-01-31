@@ -86,8 +86,38 @@ const Console = ({ onBack }) => {
 
             const data = await response.json()
 
+            console.log('Webhook response:', data)
+            console.log('Response type:', typeof data)
+            console.log('Is array?', Array.isArray(data))
+
+            // Handle different response structures
+            let ideasArray = data
+
+            // If response is an object with an array property, extract it
+            if (data && typeof data === 'object' && !Array.isArray(data)) {
+                // Try common array property names
+                if (Array.isArray(data.ideas)) {
+                    ideasArray = data.ideas
+                } else if (Array.isArray(data.niches)) {
+                    ideasArray = data.niches
+                } else if (Array.isArray(data.results)) {
+                    ideasArray = data.results
+                } else if (Array.isArray(data.data)) {
+                    ideasArray = data.data
+                } else {
+                    // If no array found, try to get the first array property
+                    const arrayProp = Object.values(data).find(val => Array.isArray(val))
+                    if (arrayProp) {
+                        ideasArray = arrayProp
+                    }
+                }
+            }
+
+            console.log('Extracted ideas array:', ideasArray)
+            console.log('Ideas array length:', Array.isArray(ideasArray) ? ideasArray.length : 'Not an array')
+
             // Set the result from webhook response
-            setResult(data)
+            setResult(ideasArray)
             setIsGenerating(false)
         } catch (err) {
             console.error('Error calling webhook:', err)
