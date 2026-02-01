@@ -1,322 +1,164 @@
-import React, { useState, useEffect } from 'react'
-import { motion, useMotionValue, useTransform } from 'framer-motion'
-import { Terminal, Radar, Eye, Zap } from 'lucide-react'
-
-// Binary Code Particle Component
-const BinaryParticle = ({ delay = 0 }) => {
-    const binary = ['0', '1']
-    const randomBinary = () => binary[Math.floor(Math.random() * binary.length)]
-
-    return (
-        <motion.div
-            className="absolute text-cyan-500/20 font-mono text-xs select-none pointer-events-none"
-            style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-            }}
-            initial={{ opacity: 0, y: 0 }}
-            animate={{
-                opacity: [0, 0.3, 0.3, 0],
-                y: [0, -100],
-            }}
-            transition={{
-                duration: 8,
-                repeat: Infinity,
-                delay: delay,
-                ease: "linear"
-            }}
-        >
-            {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i}>{randomBinary()}</div>
-            ))}
-        </motion.div>
-    )
-}
-
-// Radar Scanning Effect
-const RadarGrid = () => {
-    return (
-        <div className="absolute inset-0 overflow-hidden opacity-10">
-            {/* Horizontal lines */}
-            {Array.from({ length: 20 }).map((_, i) => (
-                <div
-                    key={`h-${i}`}
-                    className="absolute w-full h-px bg-cyan-500"
-                    style={{ top: `${i * 5}%` }}
-                />
-            ))}
-            {/* Vertical lines */}
-            {Array.from({ length: 20 }).map((_, i) => (
-                <div
-                    key={`v-${i}`}
-                    className="absolute h-full w-px bg-cyan-500"
-                    style={{ left: `${i * 5}%` }}
-                />
-            ))}
-
-            {/* Scanning line */}
-            <motion.div
-                className="absolute inset-0 bg-gradient-to-b from-transparent via-yellow-400/20 to-transparent h-32"
-                animate={{
-                    y: ['-10%', '110%'],
-                }}
-                transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "linear"
-                }}
-            />
-        </div>
-    )
-}
-
-// Typing Effect Hook
-const useTypingEffect = (text, speed = 100) => {
-    const [displayedText, setDisplayedText] = useState('')
-    const [currentIndex, setCurrentIndex] = useState(0)
-
-    useEffect(() => {
-        if (currentIndex < text.length) {
-            const timeout = setTimeout(() => {
-                setDisplayedText(prev => prev + text[currentIndex])
-                setCurrentIndex(prev => prev + 1)
-            }, speed)
-            return () => clearTimeout(timeout)
-        }
-    }, [currentIndex, text, speed])
-
-    return displayedText
-}
+import React from 'react'
+import { motion } from 'framer-motion'
+import { Sparkles, ArrowRight, Zap, Play, Star } from 'lucide-react'
+import mascot from '../assets/mascot.png'
 
 const LandingPage = ({ onLaunchConsole }) => {
-    const mouseX = useMotionValue(0)
-    const mouseY = useMotionValue(0)
-
-    const [isGlitching, setIsGlitching] = useState(false)
-
-    // Typing effect for subtitle
-    const typedText = useTypingEffect('Declassify the Secrets of Viral Content', 80)
-
-    // Mouse move handler for spotlight effect
-    const handleMouseMove = (e) => {
-        mouseX.set(e.clientX)
-        mouseY.set(e.clientY)
-    }
-
-    // Glitch effect trigger
-    const triggerGlitch = () => {
-        setIsGlitching(true)
-        setTimeout(() => setIsGlitching(false), 200)
-    }
-
     return (
-        <motion.div
-            className="relative min-h-screen bg-[#050505] flex items-center justify-center overflow-hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            onMouseMove={handleMouseMove}
-        >
-            {/* Radar Grid Background */}
-            <RadarGrid />
-
-            {/* Binary Code Particles */}
-            {Array.from({ length: 15 }).map((_, i) => (
-                <BinaryParticle key={i} delay={i * 0.5} />
-            ))}
-
-            {/* Cursor Spotlight Effect */}
-            <motion.div
-                className="fixed w-96 h-96 rounded-full pointer-events-none z-0"
-                style={{
-                    background: 'radial-gradient(circle, rgba(250, 204, 21, 0.08) 0%, transparent 70%)',
-                    x: useTransform(mouseX, (x) => x - 192),
-                    y: useTransform(mouseY, (y) => y - 192),
-                }}
-            />
-
-            {/* Scanlines Overlay */}
-            <div className="absolute inset-0 pointer-events-none z-10">
-                <div className="w-full h-full bg-[linear-gradient(transparent_50%,rgba(250,204,21,0.02)_50%)] bg-[length:100%_4px]" />
+        <div className="relative min-h-screen bg-white overflow-hidden flex flex-col items-center justify-center text-center font-sans selection:bg-yellow-300">
+            {/* Animated Background Blobs */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <motion.div
+                    className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
+                    animate={{
+                        x: [0, 100, 0],
+                        y: [0, 50, 0],
+                        scale: [1, 1.2, 1],
+                    }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                />
+                <motion.div
+                    className="absolute top-[20%] right-[-10%] w-[400px] h-[400px] bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
+                    animate={{
+                        x: [0, -70, 0],
+                        y: [0, 100, 0],
+                        scale: [1, 1.1, 1],
+                    }}
+                    transition={{ duration: 12, repeat: Infinity, ease: "linear", delay: 1 }}
+                />
+                <motion.div
+                    className="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] bg-yellow-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
+                    animate={{
+                        x: [0, 50, 0],
+                        y: [0, -50, 0],
+                    }}
+                    transition={{ duration: 15, repeat: Infinity, ease: "linear", delay: 2 }}
+                />
             </div>
+
+            {/* Navbar / Top Bar */}
+            <nav className="absolute top-0 w-full p-6 flex justify-between items-center z-20 max-w-7xl mx-auto">
+                <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 bg-[#FFD700] rounded-xl flex items-center justify-center shadow-md transform rotate-3">
+                        <Zap className="w-6 h-6 text-black fill-black" />
+                    </div>
+                    <span className="font-bold text-2xl tracking-tight">ViralSpy</span>
+                </div>
+                <div className="hidden md:flex gap-6 text-sm font-medium text-gray-600">
+                    <a href="#" className="hover:text-black transition-colors">Features</a>
+                    <a href="#" className="hover:text-black transition-colors">Pricing</a>
+                    <a href="#" className="hover:text-black transition-colors">About</a>
+                </div>
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-5 py-2 bg-black text-white rounded-full text-sm font-bold hover:bg-gray-800 transition-colors"
+                >
+                    Get Started
+                </motion.button>
+            </nav>
 
             {/* Main Content */}
             <motion.div
-                className="relative z-20 text-center px-4 max-w-4xl"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.6 }}
+                className="relative z-10 max-w-5xl mx-auto px-6 flex flex-col items-center mt-10 md:mt-0"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
             >
-                {/* Top Badge */}
+                {/* Badge */}
                 <motion.div
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-yellow-400/30 bg-yellow-400/5 mb-8"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    transition={{ delay: 0.5, type: 'spring' }}
+                    transition={{ delay: 0.2, type: 'spring' }}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 border border-orange-100 rounded-full text-orange-600 text-sm font-bold mb-8 shadow-sm hover:shadow-md transition-all cursor-default"
                 >
-                    <Radar className="w-4 h-4 text-yellow-400 animate-pulse" />
-                    <span className="text-yellow-400 text-sm font-mono tracking-wider">INTELLIGENCE SYSTEM ACTIVE</span>
+                    <Star className="w-4 h-4 fill-orange-600" />
+                    <span>#1 Niche Finder for Creators</span>
                 </motion.div>
 
-                {/* Logo/Title with Glitch Effect */}
+                {/* Hero Title */}
+                <h1 className="text-6xl md:text-8xl font-extrabold tracking-tight text-black mb-6 leading-[1.1]">
+                    Unlock Viral <br />
+                    <span className="relative">
+                        <span className="relative z-10">Potential</span>
+                        <svg className="absolute w-full h-4 -bottom-1 left-0 text-[#FFD700] z-0" viewBox="0 0 100 10" preserveAspectRatio="none">
+                            <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" />
+                        </svg>
+                    </span>
+                </h1>
+
+                <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mb-12 leading-relaxed">
+                    Discover untapped niches, analyze competition, and generate
+                    content ideas that actually go viral.
+                </p>
+
+                {/* Mascot Centerpiece */}
                 <motion.div
-                    className="mb-6"
-                    initial={{ scale: 0.9 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.6, duration: 0.5 }}
+                    className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px] mb-12"
+                    animate={{ y: [0, -20, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
-                    <h1
-                        className={`text-7xl md:text-8xl font-bold mb-4 tracking-tight font-mono ${isGlitching ? 'animate-glitch' : ''
-                            }`}
-                        style={{
-                            background: 'linear-gradient(to right, #FACC15, #FDE047, #FACC15)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text',
-                            textShadow: isGlitching ? '2px 2px #FF0000, -2px -2px #00FF00' : 'none',
-                        }}
+                    {/* Glow behind mascot */}
+                    <div className="absolute inset-0 bg-[#FFD700] rounded-full filter blur-[80px] opacity-20 transform scale-90" />
+
+                    {/* The Mascot Image */}
+                    <img
+                        src={mascot}
+                        alt="Cute ViralSpy Mascot"
+                        className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
+                    />
+
+                    {/* Floating Elements around mascot */}
+                    <motion.div
+                        className="absolute top-10 right-0 bg-white p-3 rounded-2xl shadow-xl flex items-center gap-2"
+                        animate={{ y: [0, 10, 0], rotate: [0, 5, 0] }}
+                        transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
                     >
-                        ViralSpy
-                    </h1>
-
-                    {/* Subtitle with Typing Effect */}
-                    <div className="h-8 flex items-center justify-center">
-                        <p className="text-gray-400 text-lg md:text-xl font-light">
-                            {typedText}
-                            <motion.span
-                                animate={{ opacity: [1, 0, 1] }}
-                                transition={{ duration: 0.8, repeat: Infinity }}
-                                className="inline-block w-0.5 h-5 bg-yellow-400 ml-1"
-                            />
-                        </p>
-                    </div>
-                </motion.div>
-
-                {/* Mission Brief */}
-                <motion.div
-                    className="mb-12 max-w-2xl mx-auto"
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.9, duration: 0.5 }}
-                >
-                    <div className="bg-gradient-to-r from-yellow-400/10 via-yellow-400/5 to-yellow-400/10 border border-yellow-400/20 rounded-lg p-6 backdrop-blur-sm">
-                        <div className="flex items-start gap-3">
-                            <Eye className="w-6 h-6 text-yellow-400 flex-shrink-0 mt-1" />
-                            <div className="text-left">
-                                <h3 className="text-yellow-400 font-mono text-sm mb-2 tracking-wider">MISSION OBJECTIVE</h3>
-                                <p className="text-gray-300 text-sm leading-relaxed">
-                                    Deploy advanced AI reconnaissance to identify high-value, low-competition content niches.
-                                    Extract actionable intelligence for maximum viral potential.
-                                </p>
-                            </div>
+                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                            <Sparkles className="w-5 h-5 text-green-600" />
                         </div>
-                    </div>
-                </motion.div>
+                        <span className="font-bold text-sm">High Revenue!</span>
+                    </motion.div>
 
-                {/* Command Prompt Input (Visual) */}
-                <motion.div
-                    className="mb-12 max-w-2xl mx-auto"
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 1.1, duration: 0.5 }}
-                >
-                    <div className="relative">
-                        <div className="flex items-center gap-3 px-6 py-4 bg-black/50 rounded-lg border border-yellow-400/30 backdrop-blur-sm font-mono">
-                            <Terminal className="w-5 h-5 text-yellow-400" />
-                            <span className="text-yellow-400">$</span>
-                            <input
-                                type="text"
-                                placeholder="viralspy --scan --target=youtube"
-                                className="flex-1 outline-none text-gray-300 placeholder:text-gray-600 bg-transparent font-mono text-sm"
-                                readOnly
-                            />
-                            <motion.div
-                                animate={{ opacity: [1, 0, 1] }}
-                                transition={{ duration: 1, repeat: Infinity }}
-                                className="w-2 h-4 bg-yellow-400"
-                            />
-                        </div>
-
-                        {/* Scan line effect on input */}
-                        <motion.div
-                            className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-400/10 to-transparent"
-                            animate={{ x: ['-100%', '200%'] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                        />
-                    </div>
-                </motion.div>
-
-                {/* Launch Console Button with Glitch Hover */}
-                <motion.div
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 1.3, duration: 0.5 }}
-                >
-                    <motion.button
-                        onClick={onLaunchConsole}
-                        onHoverStart={triggerGlitch}
-                        className="group relative px-12 py-5 bg-yellow-400 text-black rounded-lg text-lg font-bold overflow-hidden shadow-2xl shadow-yellow-400/20 font-mono tracking-wider"
-                        whileHover={{
-                            scale: 1.05,
-                            boxShadow: "0 0 40px rgba(250, 204, 21, 0.4)"
-                        }}
-                        whileTap={{ scale: 0.98 }}
+                    <motion.div
+                        className="absolute bottom-10 left-0 bg-white p-3 rounded-2xl shadow-xl flex items-center gap-2"
+                        animate={{ y: [0, -10, 0], rotate: [0, -5, 0] }}
+                        transition={{ duration: 3.5, repeat: Infinity, delay: 1 }}
                     >
-                        {/* Scan line animation on hover */}
-                        <motion.div
-                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                            initial={{ x: '-100%' }}
-                            whileHover={{ x: '200%' }}
-                            transition={{ duration: 0.6 }}
-                        />
-
-                        {/* Glitch bars */}
-                        <motion.div
-                            className="absolute inset-0 bg-black"
-                            initial={{ scaleX: 0 }}
-                            whileHover={{ scaleX: [0, 1, 0] }}
-                            transition={{ duration: 0.3 }}
-                            style={{ transformOrigin: 'left' }}
-                        />
-
-                        <span className="relative z-10 flex items-center gap-3">
-                            <Zap className="w-5 h-5" />
-                            LAUNCH CONSOLE
-                            <motion.span
-                                animate={{ x: [0, 5, 0] }}
-                                transition={{ duration: 1.5, repeat: Infinity }}
-                            >
-                                →
-                            </motion.span>
-                        </span>
-                    </motion.button>
+                        <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                            <Zap className="w-5 h-5 text-purple-600" />
+                        </div>
+                        <span className="font-bold text-sm">Low Competition</span>
+                    </motion.div>
                 </motion.div>
 
-                {/* Footer Info */}
-                <motion.div
-                    className="mt-12 flex items-center justify-center gap-6 text-xs text-gray-600 font-mono"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.5, duration: 0.5 }}
+                {/* Launch Button */}
+                <motion.button
+                    onClick={onLaunchConsole}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="group relative px-8 py-5 bg-[#FFD700] text-black rounded-2xl font-black text-xl shadow-[0_10px_40px_-10px_rgba(255,215,0,0.6)] hover:shadow-[0_20px_60px_-15px_rgba(255,215,0,0.8)] transition-all flex items-center gap-3 overflow-hidden"
                 >
-                    <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                        <span>SYSTEM ONLINE</span>
+                    <span className="relative z-10 flex items-center gap-3">
+                        <Play className="w-6 h-6 fill-black" />
+                        LAUNCH CONSOLE
+                    </span>
+                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                </motion.button>
+
+                {/* Social Proof / Trusted By */}
+                <div className="mt-16 text-center">
+                    <p className="text-sm font-semibold text-gray-400 mb-4 tracking-wider uppercase">Trusted by 10,000+ Creators</p>
+                    <div className="flex gap-6 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
+                        {/* Simple placeholder logos */}
+                        <div className="text-xl font-black font-serif">YouCreator</div>
+                        <div className="text-xl font-bold font-mono">StreamLine</div>
+                        <div className="text-xl font-extrabold italic">VIDalytics</div>
+                        <div className="text-xl font-bold">TubeRocket</div>
                     </div>
-                    <div className="w-px h-4 bg-gray-700" />
-                    <span>POWERED BY GEMINI AI</span>
-                    <div className="w-px h-4 bg-gray-700" />
-                    <span>CLASSIFIED: TOP SECRET</span>
-                </motion.div>
+                </div>
             </motion.div>
-
-            {/* Corner Decorations */}
-            <div className="absolute top-0 left-0 w-32 h-32 border-l-2 border-t-2 border-yellow-400/20" />
-            <div className="absolute top-0 right-0 w-32 h-32 border-r-2 border-t-2 border-yellow-400/20" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 border-l-2 border-b-2 border-yellow-400/20" />
-            <div className="absolute bottom-0 right-0 w-32 h-32 border-r-2 border-b-2 border-yellow-400/20" />
-        </motion.div>
+        </div>
     )
 }
 
