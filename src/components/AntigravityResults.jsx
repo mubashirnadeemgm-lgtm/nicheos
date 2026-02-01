@@ -76,6 +76,7 @@ const AntigravityResults = ({ ideas }) => {
                     const revenuePotential = idea.Revenue || idea.revenue_potential || idea.revenuePotential || 'Not specified'
                     const reasonForSuccess = idea.Growth || idea.reason_for_success || idea.reasonForSuccess || idea.antigravity || 'High potential niche'
                     const toolsNeeded = idea.Tools || idea.tools_needed || idea.toolsNeeded || 'Basic equipment'
+                    const description = idea.Description || idea.description || ''
 
                     // Handle Sub_Niches (can be string or array)
                     let subNiches = idea.Sub_Niches || idea.content_source || idea.contentSource || idea.contentStrategy || 'Create original content'
@@ -115,6 +116,12 @@ const AntigravityResults = ({ ideas }) => {
                                     <h3 className="text-xl font-bold text-gray-900 line-clamp-2 mb-2">
                                         {nicheName}
                                     </h3>
+                                    {/* Description - Subtitle */}
+                                    {description && (
+                                        <p className="text-sm text-gray-500 line-clamp-2 mb-3">
+                                            {description}
+                                        </p>
+                                    )}
                                     {/* Competition Level Badge */}
                                     <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-medium">
                                         <TrendingUp className="w-3.5 h-3.5" />
