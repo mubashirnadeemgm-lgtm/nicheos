@@ -118,7 +118,7 @@ const AntigravityResults = ({ ideas }) => {
                                     </h3>
                                     {/* Description - Subtitle */}
                                     {description && (
-                                        <p className="text-sm text-gray-500 line-clamp-2 mb-3">
+                                        <p className="text-sm text-gray-500 leading-relaxed mb-3">
                                             {description}
                                         </p>
                                     )}
