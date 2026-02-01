@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Sparkles, TrendingUp, DollarSign, AlertTriangle, Wrench, FileText, Award, Radar } from 'lucide-react'
+import { Sparkles, TrendingUp, DollarSign, AlertTriangle, Wrench, FileText, Radar } from 'lucide-react'
 
 const AntigravityResults = ({ ideas }) => {
     // Error boundary: Check if ideas exists
@@ -79,144 +79,166 @@ const AntigravityResults = ({ ideas }) => {
 
                     // Handle Sub_Niches (can be string or array)
                     let subNiches = idea.Sub_Niches || idea.content_source || idea.contentSource || idea.contentStrategy || 'Create original content'
-                    if (Array.isArray(subNiches)) {
-                        subNiches = subNiches.join(', ')
-                    }
 
-                    // Handle production_guide as array or string (fallback)
-                    let productionGuide = idea.production_guide || idea.productionGuide || idea.weeklyWorkflow?.schedule || 'Follow standard production workflow'
-                    if (Array.isArray(productionGuide)) {
-                        productionGuide = productionGuide.join('\n')
-                    }
-
-                    // Determine virality badge color
+                    // Determine virality color and percentage
                     const getViralityColor = (score) => {
-                        if (score >= 80) return 'bg-green-500'
-                        if (score >= 60) return 'bg-yellow-500'
-                        return 'bg-orange-500'
+                        if (score >= 80) return { color: 'text-green-500', bg: 'bg-green-500', ring: 'stroke-green-500' }
+                        if (score >= 60) return { color: 'text-yellow-500', bg: 'bg-yellow-500', ring: 'stroke-yellow-500' }
+                        return { color: 'text-orange-500', bg: 'bg-orange-500', ring: 'stroke-orange-500' }
                     }
+
+                    const viralityColors = getViralityColor(viralityScore * 10)
+                    const scorePercentage = viralityScore * 10 // Convert 0-10 to 0-100
+
+                    // Parse sub-niches into array if string
+                    const subNichesArray = typeof subNiches === 'string'
+                        ? subNiches.split(',').map(s => s.trim()).filter(Boolean)
+                        : Array.isArray(subNiches) ? subNiches : []
+
+                    // Parse tools into array if string
+                    const toolsArray = typeof toolsNeeded === 'string'
+                        ? toolsNeeded.split(',').map(s => s.trim()).filter(Boolean)
+                        : Array.isArray(toolsNeeded) ? toolsNeeded : []
 
                     return (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, x: -50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.3 + index * 0.2 }}
-                            className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 hover:border-purple-300 transition-all p-6 md:p-8"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 + index * 0.1 }}
+                            className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all border border-gray-200 overflow-hidden flex flex-col h-[600px]"
                         >
-                            {/* Header with Niche Name and Virality Score */}
-                            <div className="flex items-start justify-between mb-6">
-                                <div className="flex items-center gap-3 flex-1">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
-                                        {index + 1}
+                            {/* Header with Circular Progress Score */}
+                            <div className="p-6 border-b border-gray-100 flex items-start justify-between gap-4">
+                                <div className="flex-1 min-w-0">
+                                    {/* Title - Max 2 lines with ellipsis */}
+                                    <h3 className="text-xl font-bold text-gray-900 line-clamp-2 mb-2">
+                                        {nicheName}
+                                    </h3>
+                                    {/* Competition Level Badge */}
+                                    <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-medium">
+                                        <TrendingUp className="w-3.5 h-3.5" />
+                                        {competitionLevel}
                                     </div>
-                                    <div className="flex-1">
-                                        <h3 className="text-2xl font-bold text-gray-900 mb-1">
-                                            {nicheName}
-                                        </h3>
-                                        <p className="text-sm text-gray-500">Niche Idea #{index + 1}</p>
+                                </div>
+
+                                {/* Circular Progress Virality Score */}
+                                <div className="flex-shrink-0 relative">
+                                    <svg className="w-20 h-20 transform -rotate-90">
+                                        {/* Background circle */}
+                                        <circle
+                                            cx="40"
+                                            cy="40"
+                                            r="32"
+                                            stroke="currentColor"
+                                            strokeWidth="6"
+                                            fill="none"
+                                            className="text-gray-200"
+                                        />
+                                        {/* Progress circle */}
+                                        <circle
+                                            cx="40"
+                                            cy="40"
+                                            r="32"
+                                            stroke="currentColor"
+                                            strokeWidth="6"
+                                            fill="none"
+                                            strokeDasharray={`${2 * Math.PI * 32}`}
+                                            strokeDashoffset={`${2 * Math.PI * 32 * (1 - scorePercentage / 100)}`}
+                                            className={viralityColors.ring}
+                                            strokeLinecap="round"
+                                        />
+                                    </svg>
+                                    {/* Score text in center */}
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                        <span className={`text-2xl font-bold ${viralityColors.color}`}>
+                                            {viralityScore}
+                                        </span>
+                                        <span className="text-[10px] text-gray-500 font-medium">/ 10</span>
                                     </div>
                                 </div>
-                                {/* Virality Score Badge */}
-                                <div className="flex flex-col items-end gap-1 ml-4">
-                                    <div className={`${getViralityColor(viralityScore)} text-white px-4 py-2 rounded-full font-bold text-lg flex items-center gap-2`}>
-                                        <Award className="w-5 h-5" />
-                                        {viralityScore}
+                            </div>
+
+                            {/* Card Body - Scrollable content */}
+                            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+                                {/* Revenue Stat Box - Highlighted */}
+                                <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-lg p-4">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <DollarSign className="w-4 h-4 text-green-600" />
+                                        <span className="text-xs font-semibold text-green-900 uppercase tracking-wide">Revenue Potential</span>
                                     </div>
-                                    <span className="text-xs text-gray-500">Virality Score</span>
+                                    <p className="text-sm font-medium text-green-800">
+                                        {revenuePotential}
+                                    </p>
                                 </div>
+
+                                {/* Why This Succeeds - 3 lines max */}
+                                <div>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <Sparkles className="w-4 h-4 text-yellow-500" />
+                                        <h4 className="text-sm font-semibold text-gray-900">Why This Succeeds</h4>
+                                    </div>
+                                    <p className="text-sm text-gray-700 leading-relaxed line-clamp-3">
+                                        {reasonForSuccess}
+                                    </p>
+                                </div>
+
+                                {/* Sub-Niches as Pill Tags */}
+                                {subNichesArray.length > 0 && (
+                                    <div>
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <FileText className="w-4 h-4 text-blue-500" />
+                                            <h4 className="text-sm font-semibold text-gray-900">Sub-Niches</h4>
+                                        </div>
+                                        <div className="flex flex-wrap gap-2">
+                                            {subNichesArray.slice(0, 6).map((subNiche, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    className="inline-flex items-center px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium hover:bg-blue-100 transition-colors cursor-pointer"
+                                                >
+                                                    {subNiche}
+                                                </span>
+                                            ))}
+                                            {subNichesArray.length > 6 && (
+                                                <span className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
+                                                    +{subNichesArray.length - 6} more
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Tools as Minimal Badges */}
+                                {toolsArray.length > 0 && (
+                                    <div>
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <Wrench className="w-4 h-4 text-orange-500" />
+                                            <h4 className="text-sm font-semibold text-gray-900">Tools Needed</h4>
+                                        </div>
+                                        <div className="flex flex-wrap gap-2">
+                                            {toolsArray.map((tool, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    className="inline-flex items-center px-2.5 py-1 bg-gray-100 text-gray-700 rounded-md text-xs font-medium"
+                                                >
+                                                    {tool}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
-                            {/* Competition Level */}
-                            <div className="mb-6 bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg border border-purple-200">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <TrendingUp className="w-5 h-5 text-purple-600" />
-                                    <h4 className="font-semibold text-purple-900">Competition Level</h4>
-                                </div>
-                                <p className="text-purple-800 leading-relaxed">
-                                    {competitionLevel}
-                                </p>
-                            </div>
-
-                            {/* Revenue Potential */}
-                            <div className="mb-6">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <DollarSign className="w-5 h-5 text-green-500" />
-                                    <h4 className="font-semibold text-gray-900">Revenue Potential</h4>
-                                </div>
-                                <p className="text-2xl font-bold text-green-600">
-                                    {revenuePotential}
-                                </p>
-                            </div>
-
-                            {/* Reason for Success */}
-                            <div className="mb-6">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <Sparkles className="w-5 h-5 text-yellow-500" />
-                                    <h4 className="font-semibold text-gray-900">Why This Will Succeed</h4>
-                                </div>
-                                <p className="text-gray-700 leading-relaxed">
-                                    {reasonForSuccess}
-                                </p>
-                            </div>
-
-                            {/* Sub-Niches / Content Ideas */}
-                            <div className="mb-6 bg-blue-50 p-4 rounded-lg border border-blue-200">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <FileText className="w-5 h-5 text-blue-600" />
-                                    <h4 className="font-semibold text-blue-900">Sub-Niches & Content Ideas</h4>
-                                </div>
-                                <p className="text-blue-800 leading-relaxed">
-                                    {subNiches}
-                                </p>
-                            </div>
-
-                            {/* Tools Needed */}
-                            <div className="mb-6">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <Wrench className="w-5 h-5 text-orange-500" />
-                                    <h4 className="font-semibold text-gray-900">Tools Needed</h4>
-                                </div>
-                                <p className="text-gray-700 leading-relaxed">
-                                    {toolsNeeded}
-                                </p>
-                            </div>
-
-                            {/* Production Guide */}
-                            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                <h4 className="font-semibold text-gray-900 mb-3">📋 Production Guide</h4>
-                                <p className="text-gray-700 leading-relaxed text-sm whitespace-pre-line">
-                                    {productionGuide}
-                                </p>
+                            {/* Footer - Action Area */}
+                            <div className="p-4 bg-gray-50 border-t border-gray-100">
+                                <button className="w-full py-2 px-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-semibold rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-sm hover:shadow-md">
+                                    Explore This Niche
+                                </button>
                             </div>
                         </motion.div>
                     )
                 })}
             </div>
-
-            {/* Action CTA */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1 }}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-8 rounded-2xl text-center"
-            >
-                <h3 className="text-2xl font-bold mb-2">Ready to Launch?</h3>
-                <p className="text-purple-100 mb-4">
-                    Pick one idea, create your first video this week, and start building your channel!
-                </p>
-                <div className="flex flex-wrap justify-center gap-4">
-                    <button className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                        Save These Ideas
-                    </button>
-                    <button
-                        onClick={() => window.location.reload()}
-                        className="bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-800 transition-colors"
-                    >
-                        Generate More Ideas
-                    </button>
-                </div>
-            </motion.div>
         </motion.div>
     )
 }
