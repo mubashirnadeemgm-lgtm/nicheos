@@ -2,7 +2,19 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { Sparkles, TrendingUp, DollarSign, AlertTriangle, Wrench, FileText, Radar } from 'lucide-react'
 
-const AntigravityResults = ({ ideas }) => {
+const AntigravityResults = ({ ideas, onExplore }) => {
+    // ... (rest of component)
+
+    // ... inside the map loop ...
+    {/* Footer - Action Area */ }
+    <div className="p-4 bg-gray-50 border-t border-gray-100">
+        <button
+            onClick={() => onExplore(idea)}
+            className="w-full py-2 px-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-semibold rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-sm hover:shadow-md"
+        >
+            Explore This Niche
+        </button>
+    </div>
     // Error boundary: Check if ideas exists
     if (!ideas) {
         return (
@@ -238,7 +250,10 @@ const AntigravityResults = ({ ideas }) => {
 
                             {/* Footer - Action Area */}
                             <div className="p-4 bg-gray-50 border-t border-gray-100">
-                                <button className="w-full py-2 px-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-semibold rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-sm hover:shadow-md">
+                                <button
+                                    onClick={() => onExplore(idea)}
+                                    className="w-full py-2 px-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-semibold rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-sm hover:shadow-md"
+                                >
                                     Explore This Niche
                                 </button>
                             </div>

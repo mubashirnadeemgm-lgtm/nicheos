@@ -97,6 +97,13 @@ const Console = ({ onBack }) => {
         timeCommitment, nicheCount, result
     ])
 
+    const handleExplore = (niche) => {
+        // For now, log the niche to console. 
+        // In the future, this could open a modal or save to favorites.
+        console.log('Exploring niche:', niche)
+        // You could also add a toast notification here
+    }
+
     const handleGenerate = async () => {
         // Clear previous errors
         setError(null)
@@ -140,7 +147,8 @@ const Console = ({ onBack }) => {
 
         try {
             // POST request to N8N webhook
-            const response = await fetch('https://arthor478.app.n8n.cloud/webhook-test/viralspy', {
+            console.log('Sending payload to webhook:', payload)
+            const response = await fetch('https://arthor478.app.n8n.cloud/webhook/viralspy', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -149,7 +157,8 @@ const Console = ({ onBack }) => {
             })
 
             if (!response.ok) {
-                throw new Error(`Webhook error: ${response.status} ${response.statusText}`)
+                const errorText = await response.text()
+                throw new Error(`Webhook error: ${response.status} ${response.statusText} - ${errorText}`)
             }
 
             const data = await response.json()
@@ -187,7 +196,7 @@ const Console = ({ onBack }) => {
             // Final validation: Ensure we have a valid array
             if (!Array.isArray(ideasArray)) {
                 console.error('Failed to extract array from response')
-                throw new Error('Invalid response format: Expected an array of niches')
+                throw new Error('Invalid response format: Expected an array of niches. Check console for details.')
             }
 
             if (ideasArray.length === 0) {
@@ -585,7 +594,7 @@ const Console = ({ onBack }) => {
                 </motion.div>
 
                 {/* Results */}
-                {result && <AntigravityResults ideas={result} />}
+                {result && <AntigravityResults ideas={result} onExplore={handleExplore} />}
             </div>
         </motion.div>
     )
