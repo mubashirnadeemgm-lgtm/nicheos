@@ -1,40 +1,25 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Sparkles, ArrowRight, Zap, Play, Star } from 'lucide-react'
-import mascot from '../assets/mascot.png'
+import landingPageVideo from '../assets/landingpage.mp4'
 
 const LandingPage = ({ onLaunchConsole }) => {
     return (
-        <div className="relative min-h-screen bg-white overflow-hidden flex flex-col items-center justify-center text-center font-sans selection:bg-yellow-300">
-            {/* Animated Background Blobs */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <motion.div
-                    className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
-                    animate={{
-                        x: [0, 100, 0],
-                        y: [0, 50, 0],
-                        scale: [1, 1.2, 1],
-                    }}
-                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                />
-                <motion.div
-                    className="absolute top-[20%] right-[-10%] w-[400px] h-[400px] bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
-                    animate={{
-                        x: [0, -70, 0],
-                        y: [0, 100, 0],
-                        scale: [1, 1.1, 1],
-                    }}
-                    transition={{ duration: 12, repeat: Infinity, ease: "linear", delay: 1 }}
-                />
-                <motion.div
-                    className="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] bg-yellow-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
-                    animate={{
-                        x: [0, 50, 0],
-                        y: [0, -50, 0],
-                    }}
-                    transition={{ duration: 15, repeat: Infinity, ease: "linear", delay: 2 }}
-                />
-            </div>
+        <div className="relative min-h-screen bg-black overflow-hidden flex flex-col items-center justify-center text-center font-sans selection:bg-yellow-300">
+            {/* Video Background Layer */}
+            <video
+                className="absolute inset-0 w-full h-full object-cover -z-20"
+                autoPlay
+                loop
+                muted
+                playsInline
+            >
+                <source src={landingPageVideo} type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+
+            {/* Overlay Layer */}
+            <div className="absolute inset-0 bg-white/60 -z-10 backdrop-blur-[2px]" />
 
             {/* Navbar / Top Bar */}
             <nav className="absolute top-0 w-full p-6 flex justify-between items-center z-20 max-w-7xl mx-auto">
@@ -42,12 +27,12 @@ const LandingPage = ({ onLaunchConsole }) => {
                     <div className="w-10 h-10 bg-[#FFD700] rounded-xl flex items-center justify-center shadow-md transform rotate-3">
                         <Zap className="w-6 h-6 text-black fill-black" />
                     </div>
-                    <span className="font-bold text-2xl tracking-tight">ViralSpy</span>
+                    <span className="font-bold text-2xl tracking-tight text-black">ViralSpy</span>
                 </div>
-                <div className="hidden md:flex gap-6 text-sm font-medium text-gray-600">
-                    <a href="#" className="hover:text-black transition-colors">Features</a>
-                    <a href="#" className="hover:text-black transition-colors">Pricing</a>
-                    <a href="#" className="hover:text-black transition-colors">About</a>
+                <div className="hidden md:flex gap-6 text-sm font-medium text-gray-800">
+                    <a href="#" className="hover:text-black transition-colors font-bold">Features</a>
+                    <a href="#" className="hover:text-black transition-colors font-bold">Pricing</a>
+                    <a href="#" className="hover:text-black transition-colors font-bold">About</a>
                 </div>
                 <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -70,7 +55,7 @@ const LandingPage = ({ onLaunchConsole }) => {
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ delay: 0.2, type: 'spring' }}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 border border-orange-100 rounded-full text-orange-600 text-sm font-bold mb-8 shadow-sm hover:shadow-md transition-all cursor-default"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50/90 border border-orange-100 rounded-full text-orange-600 text-sm font-bold mb-8 shadow-sm hover:shadow-md transition-all cursor-default backdrop-blur-sm"
                 >
                     <Star className="w-4 h-4 fill-orange-600" />
                     <span>#1 Niche Finder for Creators</span>
@@ -87,50 +72,10 @@ const LandingPage = ({ onLaunchConsole }) => {
                     </span>
                 </h1>
 
-                <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mb-12 leading-relaxed">
+                <p className="text-xl md:text-2xl text-gray-800 font-medium max-w-2xl mb-12 leading-relaxed drop-shadow-sm">
                     Discover untapped niches, analyze competition, and generate
                     content ideas that actually go viral.
                 </p>
-
-                {/* Mascot Centerpiece */}
-                <motion.div
-                    className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px] mb-12"
-                    animate={{ y: [0, -20, 0] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                >
-                    {/* Glow behind mascot */}
-                    <div className="absolute inset-0 bg-[#FFD700] rounded-full filter blur-[80px] opacity-20 transform scale-90" />
-
-                    {/* The Mascot Image */}
-                    <img
-                        src={mascot}
-                        alt="Cute ViralSpy Mascot"
-                        className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
-                    />
-
-                    {/* Floating Elements around mascot */}
-                    <motion.div
-                        className="absolute top-10 right-0 bg-white p-3 rounded-2xl shadow-xl flex items-center gap-2"
-                        animate={{ y: [0, 10, 0], rotate: [0, 5, 0] }}
-                        transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-                    >
-                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                            <Sparkles className="w-5 h-5 text-green-600" />
-                        </div>
-                        <span className="font-bold text-sm">High Revenue!</span>
-                    </motion.div>
-
-                    <motion.div
-                        className="absolute bottom-10 left-0 bg-white p-3 rounded-2xl shadow-xl flex items-center gap-2"
-                        animate={{ y: [0, -10, 0], rotate: [0, -5, 0] }}
-                        transition={{ duration: 3.5, repeat: Infinity, delay: 1 }}
-                    >
-                        <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                            <Zap className="w-5 h-5 text-purple-600" />
-                        </div>
-                        <span className="font-bold text-sm">Low Competition</span>
-                    </motion.div>
-                </motion.div>
 
                 {/* Launch Button */}
                 <motion.button
@@ -148,13 +93,13 @@ const LandingPage = ({ onLaunchConsole }) => {
 
                 {/* Social Proof / Trusted By */}
                 <div className="mt-16 text-center">
-                    <p className="text-sm font-semibold text-gray-400 mb-4 tracking-wider uppercase">Trusted by 10,000+ Creators</p>
-                    <div className="flex gap-6 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
-                        {/* Simple placeholder logos */}
-                        <div className="text-xl font-black font-serif">YouCreator</div>
-                        <div className="text-xl font-bold font-mono">StreamLine</div>
-                        <div className="text-xl font-extrabold italic">VIDalytics</div>
-                        <div className="text-xl font-bold">TubeRocket</div>
+                    <p className="text-sm font-bold text-gray-600 mb-4 tracking-wider uppercase">Trusted by 10,000+ Creators</p>
+                    <div className="flex gap-6 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                        {/* Simple placeholder logos - darker text for readability over video */}
+                        <div className="text-xl font-black font-serif text-gray-900">YouCreator</div>
+                        <div className="text-xl font-bold font-mono text-gray-900">StreamLine</div>
+                        <div className="text-xl font-extrabold italic text-gray-900">VIDalytics</div>
+                        <div className="text-xl font-bold text-gray-900">TubeRocket</div>
                     </div>
                 </div>
             </motion.div>
