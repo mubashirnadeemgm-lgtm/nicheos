@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Sparkles, Loader2, Key, AlertCircle } from 'lucide-react'
+import { ArrowLeft, Sparkles, Loader2, Key, AlertCircle, Save, Check } from 'lucide-react'
 import SelectDropdown from './SelectDropdown'
 import AntigravityResults from './AntigravityResults'
 
@@ -22,12 +22,33 @@ const Console = ({ onBack }) => {
 
     // API Keys
     const [geminiApiKey, setGeminiApiKey] = useState('')
-    const [serpApiKey, setSerpApiKey] = useState('')
+    const [apiKeySaved, setApiKeySaved] = useState(false)
+
+    // Niche count
+    const [nicheCount, setNicheCount] = useState(3)
 
     // State management
     const [result, setResult] = useState(null)
     const [isGenerating, setIsGenerating] = useState(false)
     const [error, setError] = useState(null)
+
+    // Load saved API key from localStorage on mount
+    useEffect(() => {
+        const savedKey = localStorage.getItem('gemini_api_key')
+        if (savedKey) {
+            setGeminiApiKey(savedKey)
+            setApiKeySaved(true)
+        }
+    }, [])
+
+    // Save API key to localStorage
+    const handleSaveApiKey = () => {
+        if (geminiApiKey.trim()) {
+            localStorage.setItem('gemini_api_key', geminiApiKey)
+            setApiKeySaved(true)
+            setTimeout(() => setApiKeySaved(false), 2000) // Reset after 2 seconds
+        }
+    }
 
     const handleGenerate = async () => {
         // Clear previous errors
@@ -67,7 +88,7 @@ const Console = ({ onBack }) => {
             time_commitment: timeCommitment,
             avoided_categories: '', // Can be extended later
             gemini_api_key: geminiApiKey,
-            serp_api_key: serpApiKey || ''
+            num_niches: nicheCount
         }
 
         try {
@@ -423,37 +444,52 @@ const Console = ({ onBack }) => {
                         </div>
 
                         <div className="grid md:grid-cols-2 gap-6">
-                            {/* Gemini API Key */}
+                            {/* Gemini API Key with Save Button */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Gemini API Key <span className="text-red-500">*</span>
                                 </label>
-                                <input
-                                    type="password"
-                                    value={geminiApiKey}
-                                    onChange={(e) => setGeminiApiKey(e.target.value)}
-                                    placeholder="Paste your Gemini API Key here"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm"
-                                />
+                                <div className="flex gap-2">
+                                    <input
+                                        type="password"
+                                        value={geminiApiKey}
+                                        onChange={(e) => setGeminiApiKey(e.target.value)}
+                                        placeholder="Paste your Gemini API Key here"
+                                        className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm"
+                                    />
+                                    <button
+                                        onClick={handleSaveApiKey}
+                                        className="px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2"
+                                        title="Save API Key"
+                                    >
+                                        {apiKeySaved ? (
+                                            <Check className="w-4 h-4" />
+                                        ) : (
+                                            <Save className="w-4 h-4" />
+                                        )}
+                                    </button>
+                                </div>
                                 <p className="text-xs text-gray-500 mt-1">
-                                    Required for generating ideas.
+                                    {apiKeySaved ? '✓ API Key saved to browser' : 'Click save to persist your API key'}
                                 </p>
                             </div>
 
-                            {/* SerpApi Key */}
+                            {/* Number of Niches */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    SerpApi Key <span className="text-gray-400">(Optional)</span>
+                                    Number of Niches
                                 </label>
-                                <input
-                                    type="password"
-                                    value={serpApiKey}
-                                    onChange={(e) => setSerpApiKey(e.target.value)}
-                                    placeholder="Paste SerpApi Key (Optional)"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm"
-                                />
+                                <select
+                                    value={nicheCount}
+                                    onChange={(e) => setNicheCount(Number(e.target.value))}
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                                >
+                                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                                        <option key={num} value={num}>{num} Niche{num > 1 ? 's' : ''}</option>
+                                    ))}
+                                </select>
                                 <p className="text-xs text-gray-500 mt-1">
-                                    Optional: Add this for real-time search data and better results.
+                                    Select how many niche ideas to generate (1-10)
                                 </p>
                             </div>
                         </div>
@@ -478,23 +514,23 @@ const Console = ({ onBack }) => {
                     <motion.button
                         onClick={handleGenerate}
                         disabled={isGenerating}
-                        className="w-full py-4 bg-black text-white rounded-lg font-semibold text-lg hover:bg-gray-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
+                        className="w-full py-4 bg-[#FFD700] text-black rounded-lg font-bold text-lg hover:bg-yellow-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group shadow-lg"
                         whileHover={{ scale: isGenerating ? 1 : 1.02 }}
                         whileTap={{ scale: isGenerating ? 1 : 0.98 }}
                     >
                         <motion.div
-                            className="absolute inset-0 bg-gradient-to-r from-gray-700 to-black opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity"
                         />
                         <span className="relative z-10 flex items-center justify-center gap-2">
                             {isGenerating ? (
                                 <>
                                     <Loader2 className="w-5 h-5 animate-spin" />
-                                    Antigravity Engine Computing...
+                                    GENERATING...
                                 </>
                             ) : (
                                 <>
                                     <Sparkles className="w-5 h-5" />
-                                    GENERATE 3 CHANNEL IDEAS
+                                    GENERATE
                                 </>
                             )}
                         </span>
