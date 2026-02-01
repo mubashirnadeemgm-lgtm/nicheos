@@ -50,6 +50,53 @@ const Console = ({ onBack }) => {
         }
     }
 
+    // Load saved session data on mount
+    useEffect(() => {
+        const savedSession = localStorage.getItem('console_session_data')
+        if (savedSession) {
+            try {
+                const data = JSON.parse(savedSession)
+                if (data.platform) setPlatform(data.platform)
+                if (data.category) setCategory(data.category)
+                if (data.customCategory) setCustomCategory(data.customCategory)
+                if (data.audience) setAudience(data.audience)
+                if (data.presenter) setPresenter(data.presenter)
+                if (data.customPresenter) setCustomPresenter(data.customPresenter)
+                if (data.tone) setTone(data.tone)
+                if (data.customTone) setCustomTone(data.customTone)
+                if (data.budget) setBudget(data.budget)
+                if (data.customBudget) setCustomBudget(data.customBudget)
+                if (data.goal) setGoal(data.goal)
+                if (data.language) setLanguage(data.language)
+                if (data.customLanguage) setCustomLanguage(data.customLanguage)
+                if (data.timeCommitment) setTimeCommitment(data.timeCommitment)
+                if (data.nicheCount) setNicheCount(data.nicheCount)
+                if (data.result) setResult(data.result)
+            } catch (e) {
+                console.error('Failed to parse session data', e)
+            }
+        }
+    }, [])
+
+    // Save session data to localStorage
+    useEffect(() => {
+        // Only save if we have at least some data
+        if (platform || category || audience || result) {
+            const sessionData = {
+                platform, category, customCategory, audience,
+                presenter, customPresenter, tone, customTone,
+                budget, customBudget, goal, language, customLanguage,
+                timeCommitment, nicheCount, result
+            }
+            localStorage.setItem('console_session_data', JSON.stringify(sessionData))
+        }
+    }, [
+        platform, category, customCategory, audience,
+        presenter, customPresenter, tone, customTone,
+        budget, customBudget, goal, language, customLanguage,
+        timeCommitment, nicheCount, result
+    ])
+
     const handleGenerate = async () => {
         // Clear previous errors
         setError(null)
