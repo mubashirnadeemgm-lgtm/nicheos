@@ -69,15 +69,21 @@ const AntigravityResults = ({ ideas }) => {
             {/* Ideas Grid */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {ideas.map((idea, index) => {
-                    // Safely access properties with fallbacks
-                    const nicheName = idea.niche_name || idea.channelName || `Niche Idea ${index + 1}`
-                    const viralityScore = idea.virality_score || idea.viralityScore || 0
-                    const competitionLevel = idea.competition_level || idea.competitionLevel || 'Not specified'
-                    const revenuePotential = idea.revenue_potential || idea.revenuePotential || 'Not specified'
-                    const reasonForSuccess = idea.reason_for_success || idea.reasonForSuccess || idea.antigravity || 'High potential niche'
-                    const contentSource = idea.content_source || idea.contentSource || idea.contentStrategy || 'Create original content'
-                    const toolsNeeded = idea.tools_needed || idea.toolsNeeded || 'Basic equipment'
-                    // Handle production_guide as array or string
+                    // Map N8N capitalized keys (priority) with fallbacks to previous formats
+                    const nicheName = idea.Niche || idea.niche_name || idea.channelName || `Niche Idea ${index + 1}`
+                    const viralityScore = idea.Score || idea.virality_score || idea.viralityScore || 0
+                    const competitionLevel = idea.Saturation || idea.competition_level || idea.competitionLevel || 'Not specified'
+                    const revenuePotential = idea.Revenue || idea.revenue_potential || idea.revenuePotential || 'Not specified'
+                    const reasonForSuccess = idea.Growth || idea.reason_for_success || idea.reasonForSuccess || idea.antigravity || 'High potential niche'
+                    const toolsNeeded = idea.Tools || idea.tools_needed || idea.toolsNeeded || 'Basic equipment'
+
+                    // Handle Sub_Niches (can be string or array)
+                    let subNiches = idea.Sub_Niches || idea.content_source || idea.contentSource || idea.contentStrategy || 'Create original content'
+                    if (Array.isArray(subNiches)) {
+                        subNiches = subNiches.join(', ')
+                    }
+
+                    // Handle production_guide as array or string (fallback)
                     let productionGuide = idea.production_guide || idea.productionGuide || idea.weeklyWorkflow?.schedule || 'Follow standard production workflow'
                     if (Array.isArray(productionGuide)) {
                         productionGuide = productionGuide.join('\n')
@@ -154,14 +160,14 @@ const AntigravityResults = ({ ideas }) => {
                                 </p>
                             </div>
 
-                            {/* Content Source */}
+                            {/* Sub-Niches / Content Ideas */}
                             <div className="mb-6 bg-blue-50 p-4 rounded-lg border border-blue-200">
                                 <div className="flex items-center gap-2 mb-2">
                                     <FileText className="w-5 h-5 text-blue-600" />
-                                    <h4 className="font-semibold text-blue-900">Content Source</h4>
+                                    <h4 className="font-semibold text-blue-900">Sub-Niches & Content Ideas</h4>
                                 </div>
                                 <p className="text-blue-800 leading-relaxed">
-                                    {contentSource}
+                                    {subNiches}
                                 </p>
                             </div>
 
