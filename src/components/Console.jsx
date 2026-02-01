@@ -148,7 +148,7 @@ const Console = ({ onBack }) => {
         try {
             // POST request to N8N webhook
             console.log('Sending payload to webhook:', payload)
-            const response = await fetch('https://arthor478.app.n8n.cloud/webhook/viralspy', {
+            const response = await fetch('https://arthor479.app.n8n.cloud/webhook/viralspy', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
